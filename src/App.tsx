@@ -61,6 +61,7 @@ function App() {
 
     try {
       const chain = await unisat.getChain();
+      console.log("chain==>",chain);
       setChainType(chain.enum);
     } catch (e) {
       console.log("getChain error", e);
@@ -145,7 +146,7 @@ function App() {
       unisat
         .getAccounts()
         .then((accounts: string[]) => {
-          // 主动获取一次账户信息
+          // obtain account information once
           handleAccountsChanged(accounts);
         })
         .catch((e: any) => {
