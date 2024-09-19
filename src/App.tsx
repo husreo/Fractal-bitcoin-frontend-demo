@@ -193,43 +193,43 @@ function App() {
   const items: CollapseProps["items"] = [
     {
       key: "sendBitcoin",
-      label: <div style={{ textAlign: "start" }}>unisat.sendBitcoin</div>,
+      label: <div style={{ textAlign: "start", color: "white" }}>unisat.sendBitcoin</div>,
       children: <SendBitcoinCard />,
     },
     {
       key: "sendInscription",
-      label: <div style={{ textAlign: "start" }}>unisat.sendInscription</div>,
+      label: <div style={{ textAlign: "start", color: "white" }}>unisat.sendInscription</div>,
       children: <SendInscriptionCard />,
     },
 
     {
       key: "sendRunes",
-      label: <div style={{ textAlign: "start" }}>unisat.sendRunes</div>,
+      label: <div style={{ textAlign: "start", color: "white" }}>unisat.sendRunes</div>,
       children: <SendRunesCard />,
     },
     {
       key: "inscribeTransfer",
-      label: <div style={{ textAlign: "start" }}>unisat.inscribeTransfer</div>,
+      label: <div style={{ textAlign: "start", color: "white" }}>unisat.inscribeTransfer</div>,
       children: <InscribeTransferCard />,
     },
     {
       key: "signMessage",
-      label: <div style={{ textAlign: "start" }}>unisat.signMessage</div>,
+      label: <div style={{ textAlign: "start", color: "white" }}>unisat.signMessage</div>,
       children: <SignMessageCard />,
     },
     {
       key: "signPsbt",
-      label: <div style={{ textAlign: "start" }}>unisat.signPsbt</div>,
+      label: <div style={{ textAlign: "start", color: "white" }}>unisat.signPsbt</div>,
       children: <SignPsbtCard />,
     },
     {
       key: "pushPsbt",
-      label: <div style={{ textAlign: "start" }}>unisat.signPsbt</div>,
+      label: <div style={{ textAlign: "start", color: "white" }}>unisat.signPsbt</div>,
       children: <PushPsbtCard />,
     },
     {
       key: "pushTx",
-      label: <div style={{ textAlign: "start" }}>unisat.pushTx</div>,
+      label: <div style={{ textAlign: "start", color: "white" }}>unisat.pushTx</div>,
       children: <PushTxCard />,
     },
   ];
@@ -252,21 +252,23 @@ function App() {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            width: "90%",
+            width: "67%",
+            marginTop: "60px",
             alignSelf: "center",
           }}
         >
           <div style={{ minWidth: 200 }}> </div>
-          <p>Unisat Wallet Demo</p>
+          {/* <p>Unisat Wallet Demo</p> */}
           <div style={{ minWidth: 200 }}>
             {connected ? (
-              <Button
+              <button
                 onClick={async () => {
                   await unisat.disconnect();
                 }}
+                style={{ padding: "8px 12px", backgroundColor: "#282c34", border: "1px solid white", color: "white", cursor: "pointer", borderRadius: "5px" }}
               >
                 disconnect
-              </Button>
+              </button>
             ) : null}
           </div>
         </div>
@@ -275,10 +277,8 @@ function App() {
         {connected ? (
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
               padding: 10,
+              width: '60%'
             }}
           >
             <div
@@ -286,19 +286,21 @@ function App() {
                 display: "flex",
                 flex: 1,
                 flexDirection: "row",
-                width: "90%",
+                width: "100%",
                 padding: 10,
+                gap: "10px"
               }}
             >
               <Card
                 size="small"
                 title="Wallet Info"
-                style={{ width: "100%", marginRight: 5 }}
+                styles = {{ title: { color: "white" } }}
+                style={{ width: "50%", backgroundColor: "#282c34", color: "white" }}
               >
-                <div style={{ textAlign: "left", marginTop: 10 }}>
+                {/* <div style={{ textAlign: "left", marginTop: 10 }}>
                   <div style={{ fontWeight: "bold" }}>Version:</div>
                   <div style={{ wordWrap: "break-word" }}>{version}</div>
-                </div>
+                </div> */}
 
                 {chain ? (
                   <div style={{ textAlign: "left", marginTop: 10 }}>
@@ -315,9 +317,10 @@ function App() {
                         }
                       }}
                       value={chain.enum}
+                      style={{ display: "flex", flexDirection: "column", gap: "8px" }}
                     >
                       {chains.map((chain) => (
-                        <Radio value={chain.value}>{chain.label}</Radio>
+                        <Radio value={chain.value} style={{ color: "white" }}>{chain.label}</Radio>
                       ))}
                     </Radio.Group>
                   </div>
@@ -351,11 +354,37 @@ function App() {
                     </div>
                   )}
                 </div>
+                <div style={{ textAlign: "left", marginTop: 10 }}>
+                  <div style={{ fontWeight: "bold" }}>Address:</div>
+                  <div
+                    style={{ wordWrap: "break-word", cursor: "pointer" }}
+                    onClick={() => {
+                      copyToClipboard(address);
+                      messageApi.success("Address Copied.");
+                    }}
+                  >
+                    {address}
+                  </div>
+                  <div style={{ fontWeight: "bold", marginTop: "10px" }}>PublicKey:</div>
+                  <div
+                    style={{ wordWrap: "break-word", cursor: "pointer" }}
+                    onClick={() => {
+                      copyToClipboard(publicKey);
+                      messageApi.success("PublicKey Copied.");
+                    }}
+                  >
+                    {publicKey}
+                  </div>
+                  <div style={{ fontWeight: "bold", marginTop: "10px" }}>Balance: </div>
+                  <div style={{ wordWrap: "break-word", cursor: "pointer" }}>
+                    {satoshisToAmount(balance.total)} {chain && chain.unit}
+                  </div>
+                </div>
               </Card>
-              <Card
+              {/* <Card
                 size="small"
                 title="Account Info"
-                style={{ width: "100%", marginLeft: 5 }}
+                style={{ width: "100%" }}
               >
                 <div style={{ textAlign: "left", marginTop: 10 }}>
                   <div style={{ fontWeight: "bold" }}>Address:</div>
@@ -389,20 +418,21 @@ function App() {
                     {satoshisToAmount(balance.total)} {chain && chain.unit}
                   </div>
                 </div>
-              </Card>
+              </Card> */}
+              <Collapse
+                style={{
+                  backgroundColor: "#282c34",
+                  color: "white !important",
+                  width: "50%",
+                }}
+                items={items}
+                defaultActiveKey={[]}
+                onChange={() => {
+                  // todo
+                }}
+              />
             </div>
 
-            <Collapse
-              style={{
-                backgroundColor: "rgba(255,255,255,0.7)",
-                width: "90%",
-              }}
-              items={items}
-              defaultActiveKey={[]}
-              onChange={() => {
-                // todo
-              }}
-            />
           </div>
         ) : (
           <div>
